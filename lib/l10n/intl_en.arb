@@ -1,0 +1,23 @@
+{
+  "@@locale": "en",
+  "intro_msg_1": "A modern currency converter built with love for ",
+  "intro_caption_1": "Exch ⚡",
+  "close_confirmation": "Confirmation",
+  "close_msg": "Are you sure?",
+  "yes": "Yes",
+  "no": "No",
+  "why": "Why",
+  "done": "Done",
+  "copy": "Copy",
+  "share": "Share",
+  "alert_title": "Alert",
+  "alert_msg": "Something went wrong!",
+  "settings_title": "Settings",
+  "settings_option_title_contact": "Contact",
+  "settings_option_title_contact_support_email": "Support",
+  "settings_option_title_contact_feature_request": "Request Feature",
+  "settings_option_title_about": "About",
+  "settings_option_title_about_site": "Exch ⚡",
+  "settings_option_title_about_build": "Build",
+  "configure": "Configure"
+}

@@ -1,0 +1,84 @@
+import 'dart:io';
+
+import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:exch_app/src/constants.dart';
+import 'package:exch_app/src/utils/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+Future<void> initSystemAccessHelper() async {
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+  String packageName = packageInfo.packageName;
+  String version = packageInfo.version;
+  String buildNumber = packageInfo.buildNumber;
+
+  GetIt.instance.registerSingleton<SystemAccessHelper>(
+    SystemAccessHelper._(
+      packageName,
+      version,
+      buildNumber,
+    ),
+  );
+  assert(GetIt.instance.isRegistered<SystemAccessHelper>());
+  log('Registered Asset Helper Dependency');
+}
+
+SystemAccessHelper get systemAccessHelper =>
+    GetIt.instance.get<SystemAccessHelper>();
+
+class SystemAccessHelper {
+  final String packageName;
+  final String version;
+  final String buildNumber;
+
+  SystemAccessHelper._(
+    this.packageName,
+    this.version,
+    this.buildNumber,
+  );
+
+  bool get hasEnabledLogging => const bool.fromEnvironment(
+        'ENABLE_LOGS',
+        defaultValue: false,
+      );
+
+  String get appBuildInfo => "$version($buildNumber)";
+
+  bool get isAndroid => Platform.isAndroid;
+
+  bool get isIOS => Platform.isIOS;
+
+  Future<bool> openEmailClient({
+    String to = kSupportEmail,
+    required String title,
+    String? body,
+  }) async {
+    final emailUri = Uri(scheme: 'mailto', path: to, queryParameters: {
+      'subject': title,
+      if (body != null && body.isNotEmpty) "body": body,
+    });
+
+    final canLaunch = await canLaunchUrl(emailUri);
+
+    if (!canLaunch) {
+      showShortToast('Unable to open Email client on this device');
+      return false;
+    }
+
+    log('Email uri: $emailUri');
+    return launchUrl(emailUri);
+  }
+
+  Future<bool> openSite({
+    required String website,
+  }) async {
+    final url = Uri.parse(website);
+    return launchUrl(url, mode: LaunchMode.inAppBrowserView);
+  }
+
+  Future<void> copyDataToClipboard(String data) {
+    return Clipboard.setData(ClipboardData(text: data));
+  }
+}
