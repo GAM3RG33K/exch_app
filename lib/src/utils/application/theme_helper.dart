@@ -1,6 +1,7 @@
+import 'package:exch_app/src/utils/application/context_helper.dart';
+import 'package:exch_app/src/utils/logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:exch_app/src/utils/utils.dart';
 
 Future<void> initThemeHelper() async {
   GetIt.instance.registerSingleton<ThemeHelper>(
@@ -18,7 +19,6 @@ class ThemeHelper {
   double _titleFontSize = 32;
   double _subtitleFontSize = 16;
   double _bodyTextFontSize = 12;
-
 
   double get titleFontSize => _titleFontSize;
   double get subtitleFontSize => _subtitleFontSize;
@@ -58,10 +58,10 @@ class ThemeHelper {
   Color get fontColorDisabled => const Color(0xFF30393D);
 
   List<Color> get loaderColors => [
+        backgroundColor3,
         primaryColor,
-        secondaryColor,
+        backgroundColor3,
         primaryColor,
-        secondaryColor,
       ];
 
   ThemeData get appThemeData => ThemeData(
@@ -77,7 +77,6 @@ class ThemeHelper {
       TextStyle(color: fontColor1, fontSize: subtitleFontSize);
   TextStyle get bodyTextStyle =>
       TextStyle(color: fontColor1, fontSize: bodyFontSize);
-
 
   TextStyle get alertTitleTextStyle => TextStyle(
         fontSize: bodyFontSize,

@@ -1,5 +1,5 @@
+import 'package:exch_app/src/utils/logger/logger.dart';
 import 'package:get_it/get_it.dart';
-import 'package:exch_app/src/utils/utils.dart';
 
 Future<void> initAssetHelper() async {
   GetIt.instance.registerSingleton<AssetHelper>(

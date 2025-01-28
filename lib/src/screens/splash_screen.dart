@@ -1,7 +1,12 @@
+import 'package:exch_app/src/repositories/rates_repository.dart';
+import 'package:exch_app/src/screens/home_page.dart';
+import 'package:exch_app/src/utils/application/asset_helper.dart';
+import 'package:exch_app/src/utils/application/context_helper.dart';
+import 'package:exch_app/src/utils/application/orientation_helper.dart';
+import 'package:exch_app/src/utils/application/storage/storage_helper.dart';
+import 'package:exch_app/src/utils/application/theme_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:exch_app/src/components/components.dart';
-import 'package:exch_app/src/screens/screens.dart';
-import 'package:exch_app/src/utils/utils.dart';
 
 class SplashScreen extends StatefulWidget {
   static const routeName = r'\';
@@ -19,7 +24,7 @@ class _SplashScreenState extends ResponsiveState<SplashScreen> {
   }
 
   Future<void> startTimer() async {
-    await Future.delayed(const Duration(seconds: 5));
+    await ratesRepository.fetchCurrencyRates();
 
     if (safeContext != null) {
       // Check if this a first run

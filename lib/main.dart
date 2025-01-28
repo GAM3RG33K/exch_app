@@ -2,11 +2,21 @@
 
 import 'dart:async';
 
+import 'package:exch_app/src/repositories/rates_repository.dart';
+import 'package:exch_app/src/screens/splash_screen.dart';
+import 'package:exch_app/src/utils/application/asset_helper.dart';
+import 'package:exch_app/src/utils/application/context_helper.dart';
+import 'package:exch_app/src/utils/application/routes_helper.dart';
+import 'package:exch_app/src/utils/application/storage/storage_helper.dart';
+import 'package:exch_app/src/utils/application/system_access_helper.dart';
+import 'package:exch_app/src/utils/application/theme_helper.dart';
+import 'package:exch_app/src/utils/domain/currency_helper.dart';
+import 'package:exch_app/src/utils/localization/localization_helper.dart';
+import 'package:exch_app/src/utils/logger/logger.dart';
+import 'package:exch_app/src/utils/network/api_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:exch_app/src/screens/screens.dart';
-import 'package:exch_app/src/utils/utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'firebase_options.dart';
@@ -55,6 +65,9 @@ initializeAppDeependencies() async {
   await initAssetHelper();
   await initStorageHelper();
   await initSystemAccessHelper();
+  await initApiHelper();
+  await initCurrencyHelper();
+  await initRatesRepository();
 }
 
 ValueNotifier<bool> isAppInitialized = ValueNotifier(false);

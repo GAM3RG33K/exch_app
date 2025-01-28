@@ -1,5 +1,5 @@
+import 'package:exch_app/src/utils/application/theme_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:exch_app/src/utils/utils.dart';
 
 class SmallLoader extends StatefulWidget {
   final EdgeInsets? padding;

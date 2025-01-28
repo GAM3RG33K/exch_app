@@ -1,7 +1,14 @@
+import 'package:exch_app/src/components/home/error.dart';
+import 'package:exch_app/src/components/home/fetching_rates_loader.dart';
+import 'package:exch_app/src/repositories/rates_repository.dart';
+import 'package:exch_app/src/components/home/oops.dart';
+import 'package:exch_app/src/screens/converter/converter_ui.dart';
+import 'package:exch_app/src/screens/settings_page.dart';
+import 'package:exch_app/src/utils/application/context_helper.dart';
+import 'package:exch_app/src/utils/application/orientation_helper.dart';
+import 'package:exch_app/src/utils/application/theme_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:exch_app/src/constants.dart';
-import 'package:exch_app/src/screens/screens.dart';
-import 'package:exch_app/src/utils/utils.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = r'\home';
@@ -58,11 +65,23 @@ class _HomePageState extends ResponsiveState<HomePage> {
       ),
       backgroundColor: themeHelper.backgroundColor2,
       body: Center(
-        child: Center(
-          child: Text(
-            kAppName,
-            style: themeHelper.titleTextStyle,
-          ),
+        child: FutureBuilder<RepoResponse?>(
+          future: ratesRepository.fetchCurrencyRates(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              final data = snapshot.data;
+              if (data == null) {
+                return const OopsScreen();
+              }
+              if (data.error != null) {
+                return ErrorScreen(
+                  error: data.error!,
+                );
+              }
+              return ConverterUI(latestRates: data.data);
+            }
+            return const FetchingRatesLoader();
+          },
         ),
       ),
     );

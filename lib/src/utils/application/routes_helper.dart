@@ -1,5 +1,7 @@
+import 'package:exch_app/src/screens/home_page.dart';
+import 'package:exch_app/src/screens/settings_page.dart';
+import 'package:exch_app/src/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:exch_app/src/screens/screens.dart';
 
 RouteFactory onGenerateRoute = (settings) {
   if (settings.name == SplashScreen.routeName) {

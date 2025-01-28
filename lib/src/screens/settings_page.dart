@@ -1,6 +1,8 @@
+import 'package:exch_app/src/utils/application/context_helper.dart';
+import 'package:exch_app/src/utils/application/system_access_helper.dart';
+import 'package:exch_app/src/utils/application/theme_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:exch_app/src/constants.dart';
-import 'package:exch_app/src/utils/utils.dart';
 
 class SettingsPage extends StatefulWidget {
   static const routeName = r'\settings';

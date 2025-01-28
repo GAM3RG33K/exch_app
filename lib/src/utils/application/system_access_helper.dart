@@ -1,10 +1,11 @@
 import 'dart:io';
 
+import 'package:exch_app/src/utils/logger/logger.dart';
+import 'package:exch_app/src/utils/notification/notification_helper.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:exch_app/src/constants.dart';
-import 'package:exch_app/src/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> initSystemAccessHelper() async {
