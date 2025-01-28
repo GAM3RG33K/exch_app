@@ -24,6 +24,7 @@ class _SplashScreenState extends ResponsiveState<SplashScreen> {
   }
 
   Future<void> startTimer() async {
+    await Future.delayed(const Duration(milliseconds: 1000));
     await ratesRepository.fetchCurrencyRates();
 
     if (safeContext != null) {
@@ -68,7 +69,6 @@ class _SplashScreenState extends ResponsiveState<SplashScreen> {
   @override
   Widget buildTablet(BuildContext context) {
     return Scaffold(
-      backgroundColor: themeHelper.backgroundColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

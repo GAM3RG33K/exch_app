@@ -1,5 +1,6 @@
 import 'package:exch_app/src/utils/application/theme_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 class ErrorScreen extends StatelessWidget {
   const ErrorScreen({
@@ -27,13 +28,13 @@ class ErrorScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               message,
-              style: themeHelper.titleTextStyle,
+              style: ShadTheme.of(context).textTheme.h3,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Text(
               "Don't worry, We are looking into it",
-              style: themeHelper.subtitleTextStyle.copyWith(
+              style: ShadTheme.of(context).textTheme.h3.copyWith(
                 color: Colors.grey,
               ),
               textAlign: TextAlign.center,
@@ -41,7 +42,7 @@ class ErrorScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               "Reason: \n$error",
-              style: themeHelper.subtitleTextStyle.copyWith(
+              style: ShadTheme.of(context).textTheme.h3.copyWith(
                 color: themeHelper.secondaryColor,
               ),
               textAlign: TextAlign.center,

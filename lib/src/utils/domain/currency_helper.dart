@@ -25,6 +25,8 @@ class CurrencyHelper {
     log("getExchange: ${fromCurrency.abbr}: ${toCurrency.abbr}");
     final fromRate = fromCurrency.rate;
     final toRate = toCurrency.rate;
+
+    log("getExchange: ${1 * (toRate / fromRate)}");
     return 1 * (toRate / fromRate);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:exch_app/src/models/currency.dart';
 import 'package:exch_app/src/utils/application/theme_helper.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyInputCard extends StatefulWidget {
@@ -35,36 +36,26 @@ class _CurrencyInputCardState extends State<CurrencyInputCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: themeHelper.backgroundColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
+    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TextField(
-            controller: controller,
-            enabled: widget.enabled,
-            autofocus: true,
-            onChanged: (value) =>
-                widget.onValueChange?.call(num.tryParse(value) ?? 0.0),
-            style: themeHelper.titleTextStyle.copyWith(
+      child: ShadInput(
+        controller: controller,
+        enabled: widget.enabled,
+        autofocus: widget.enabled,
+        onChanged: (value) =>
+            widget.onValueChange?.call(num.tryParse(value) ?? 0.0),
+        style: ShadTheme.of(context).textTheme.h2.copyWith(
               fontSize: 32,
               color: themeHelper.fontColor1,
             ),
-            cursorColor: themeHelper.primaryColor,
-            keyboardType: const TextInputType.numberWithOptions(
-              decimal: true,
-              signed: false,
-            ),
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.zero,
-            ),
-          ),
-        ],
+        cursorColor: themeHelper.primaryColor,
+        keyboardType: const TextInputType.numberWithOptions(
+          decimal: false,
+          signed: false,
+        ),
+        decoration: const ShadDecoration(
+          border: ShadBorder.none,
+        ),
       ),
     );
   }

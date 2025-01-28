@@ -19,6 +19,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'firebase_options.dart';
 import 'package:flutter/foundation.dart';
 
@@ -95,10 +96,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return ShadApp.material(
       title: 'Exch ⚡',
       debugShowCheckedModeBanner: false,
-      debugShowMaterialGrid: false,
       locale: defaultLocale,
       supportedLocales: kSupportedLocales,
       localizationsDelegates: const [
@@ -108,22 +108,28 @@ class _MyAppState extends State<MyApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       // navigatorObservers: [AppNavigatorObserver()],
-      theme: themeHelper.appThemeData,
+      theme: ShadThemeData(
+        brightness: Brightness.dark,
+        colorScheme: ShadGreenColorScheme.dark(
+          background: themeHelper.backgroundColor,
+        ),
+        textTheme: ShadTextTheme(family: 'Ubuntu'),
+      ),
       initialRoute: SplashScreen.routeName,
       onGenerateRoute: onGenerateRoute,
-      color: themeHelper.backgroundColor,
       builder: (context, child) {
         if (!isAppInitialized.value && !context.mediaQueryScreenSize.isEmpty) {
           runPostBuild((timeStamp) {
             context.updateScreenSize();
-            themeHelper.updateDynamicFontSizes(context);
           });
           isAppInitialized.value = true;
         }
         return MediaQuery(
-            data: MediaQuery.of(context)
-                .copyWith(textScaler: TextScaler.noScaling),
-            child: SafeArea(child: child!));
+          data: MediaQuery.of(context).copyWith(
+            textScaler: TextScaler.noScaling,
+          ),
+          child: SafeArea(child: child!),
+        );
       },
     );
   }
