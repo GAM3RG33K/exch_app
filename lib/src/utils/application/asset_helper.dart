@@ -14,7 +14,7 @@ AssetHelper get assetHelper => GetIt.instance.get<AssetHelper>();
 class AssetHelper {
   AssetHelper._();
   String get imagesFolder => 'assets/images';
-  
+
 // Image Assets
   String get kLogo => '$imagesFolder/logo.png';
   String get kLogoSvg => '$imagesFolder/logo.svg';

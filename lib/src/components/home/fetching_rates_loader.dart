@@ -1,3 +1,4 @@
+import 'package:exch_app/src/utils/application/context_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import '../loaders.dart';
@@ -5,12 +6,7 @@ import '../loaders.dart';
 class FetchingRatesLoader extends StatelessWidget {
   const FetchingRatesLoader({
     super.key,
-    this.message = "Crunching numbers at light speed",
-    this.subMessage = "Hold tight while we fetch the latest rates",
   });
-
-  final String message;
-  final String subMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +18,13 @@ class FetchingRatesLoader extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 24),
           ),
           Text(
-            message,
+            context.l10n!.converter_loading_message,
             style: ShadTheme.of(context).textTheme.h3,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
           Text(
-            subMessage,
+            context.l10n!.converter_loading_submessage,
             style: ShadTheme.of(context).textTheme.p.copyWith(
                   color: Colors.grey,
                 ),

@@ -12,12 +12,54 @@
   "share": "Share",
   "alert_title": "Alert",
   "alert_msg": "Something went wrong!",
-  "settings_title": "Settings",
-  "settings_option_title_contact": "Contact",
-  "settings_option_title_contact_support_email": "Support",
-  "settings_option_title_contact_feature_request": "Request Feature",
-  "settings_option_title_about": "About",
-  "settings_option_title_about_site": "Exch ⚡",
-  "settings_option_title_about_build": "Build",
-  "configure": "Configure"
+  "configure": "Configure",
+  "converter_exchange_rate": "1 {fromCurrency} = {exchangeRate} {toCurrency}",
+  "@converter_exchange_rate": {
+    "placeholders": {
+      "fromCurrency": {
+        "type": "String"
+      },
+      "exchangeRate": {
+        "type": "String"
+      },
+      "toCurrency": {
+        "type": "String"
+      }
+    }
+  },
+  "converter_last_updated": "Updated: {date}",
+  "@converter_last_updated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "converter_loading_message": "Crunching numbers at light speed",
+  "converter_loading_submessage": "Hold tight while we fetch the latest rates",
+  "converter_na": "N/A",
+  "oops_message": "Oops! Looks like we're drawing a blank here",
+  "oops_submessage": "Don't worry, it happens to the best of us",
+  "error_message": "Something went wrong!",
+  "error_submessage": "Don't worry, We are looking into it",
+  "error_reason": "Reason: \n{error}",
+  "@error_reason": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "home_copyright": "© 2025 {appName}",
+  "@home_copyright": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "home_built_by": "Built by ",
+  "home_contact_at": "Contact me at: ",
+  "home_build": "Build: ",
+  "repo_error_message": "Could not fetch currency rates, to use, Please try again!"
 }

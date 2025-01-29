@@ -25,7 +25,8 @@ class _SplashScreenState extends ResponsiveState<SplashScreen> {
 
   Future<void> startTimer() async {
     await Future.delayed(const Duration(milliseconds: 1000));
-    await ratesRepository.fetchCurrencyRates();
+    if (!mounted) return;
+    await ratesRepository.fetchCurrencyRates(context);
 
     if (safeContext != null) {
       // Check if this a first run

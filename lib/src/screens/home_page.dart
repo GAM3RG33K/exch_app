@@ -66,7 +66,7 @@ class _HomePageState extends ResponsiveState<HomePage> {
       backgroundColor: themeHelper.backgroundColor2,
       body: Center(
         child: FutureBuilder<RepoResponse<RatesData>?>(
-          future: ratesRepository.fetchCurrencyRates(),
+          future: ratesRepository.fetchCurrencyRates(context),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               final data = snapshot.data;
@@ -113,7 +113,7 @@ class _HomePageState extends ResponsiveState<HomePage> {
                     website: kWebsite,
                   ),
                   child: Text(
-                    "© 2025 $kAppName",
+                    context.l10n!.home_copyright(kAppName),
                     style: ShadTheme.of(context).textTheme.small.copyWith(
                           color: themeHelper.fontColor1,
                         ),
@@ -124,7 +124,7 @@ class _HomePageState extends ResponsiveState<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Built by ",
+                      context.l10n!.home_built_by,
                       style: ShadTheme.of(context).textTheme.small.copyWith(
                             color: themeHelper.fontColor1,
                           ),
@@ -147,7 +147,7 @@ class _HomePageState extends ResponsiveState<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Contact me at: ",
+                      context.l10n!.home_contact_at,
                       style: ShadTheme.of(context).textTheme.small.copyWith(
                             color: themeHelper.fontColor1,
                           ),
@@ -170,7 +170,7 @@ class _HomePageState extends ResponsiveState<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Build: ",
+                      context.l10n!.home_build,
                       style: ShadTheme.of(context).textTheme.small.copyWith(
                             color: themeHelper.fontColor1,
                           ),

@@ -6,8 +6,9 @@ import 'package:exch_app/src/utils/application/storage/storage_helper.dart';
 import 'package:exch_app/src/utils/logger/logger.dart';
 import 'package:exch_app/src/utils/network/api_helper.dart';
 import 'package:exch_app/src/utils/string_helper.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:exch_app/src/utils/application/context_helper.dart';
 
 class RepoError extends Error {
   final String message;
@@ -74,7 +75,8 @@ class RatesRepository {
     return ratesData;
   }
 
-  Future<RepoResponse<RatesData>?> fetchCurrencyRates() async {
+  Future<RepoResponse<RatesData>?> fetchCurrencyRates(
+      BuildContext context) async {
     final startTimestamp = DateTime.now().microsecondsSinceEpoch;
     RatesData? ratesData = await storageHelper.getLatestRates();
     if (hasCacheExpired || ratesData == null) {
@@ -88,9 +90,8 @@ class RatesRepository {
     if (ratesData == null) {
       return RepoResponse<RatesData>(
         turnAroundTime: turnAroundTime,
-        error: RepoError(
-          "Could not fetch currency rates, to use, Please try again!",
-        ),
+        // ignore: use_build_context_synchronously
+        error: RepoError(context.l10n!.repo_error_message),
       );
     }
     storageHelper.setLatestRates(ratesData);

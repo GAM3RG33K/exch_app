@@ -266,7 +266,11 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                 return Column(
                   children: [
                     Text(
-                      "1 ${fromCurrency.abbr} = ${exchangeRate.toStringAsFixed(6)} ${toCurrency.abbr}",
+                      context.l10n!.converter_exchange_rate(
+                        fromCurrency.abbr,
+                        exchangeRate.toStringAsFixed(6),
+                        toCurrency.abbr,
+                      ),
                       style: ShadTheme.of(context).textTheme.p.copyWith(
                             color: themeHelper.fontColor1,
                             fontSize: 14,
@@ -274,7 +278,9 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Updated: ${latestRatesDate ?? 'N/A'}",
+                      context.l10n!.converter_last_updated(
+                        latestRatesDate ?? context.l10n!.converter_na,
+                      ),
                       style: ShadTheme.of(context).textTheme.p.copyWith(
                             color: Colors.grey,
                             fontSize: 12,
