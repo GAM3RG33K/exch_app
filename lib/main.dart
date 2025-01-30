@@ -13,6 +13,7 @@ import 'package:exch_app/src/utils/application/theme_helper.dart';
 import 'package:exch_app/src/utils/domain/currency_helper.dart';
 import 'package:exch_app/src/utils/localization/localization_helper.dart';
 import 'package:exch_app/src/utils/logger/logger.dart';
+import 'package:exch_app/src/utils/network/analytics_helper.dart';
 import 'package:exch_app/src/utils/network/api_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -59,9 +60,11 @@ initializeAppDeependencies() async {
       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
       return true;
     };
+    await initAnalyticsHelper();
   }
 
-  log("----------------- FORTIME -----------------");
+  log("----------------- Exch ⚡ -----------------");
+
   await initThemeHelper();
   await initAssetHelper();
   await initStorageHelper();

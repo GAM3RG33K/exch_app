@@ -1,9 +1,12 @@
 // rate fetch api : /api/rates/latest
 
+import 'dart:async';
+
 import 'package:exch_app/src/models/api/rates_data.dart';
 import 'package:exch_app/src/models/currency.dart';
 import 'package:exch_app/src/utils/application/storage/storage_helper.dart';
 import 'package:exch_app/src/utils/logger/logger.dart';
+import 'package:exch_app/src/utils/network/analytics_helper.dart';
 import 'package:exch_app/src/utils/network/api_helper.dart';
 import 'package:exch_app/src/utils/string_helper.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +73,7 @@ class RatesRepository {
     if (data == null || data.isEmpty) {
       return null;
     }
-
+    unawaited(analyticsHelper?.logFetchRates());
     final ratesData = RatesData.fromJson(data.cast<String, dynamic>());
     return ratesData;
   }

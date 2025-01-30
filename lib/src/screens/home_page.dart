@@ -8,8 +8,11 @@ import 'package:exch_app/src/utils/application/context_helper.dart';
 import 'package:exch_app/src/utils/application/orientation_helper.dart';
 import 'package:exch_app/src/utils/application/system_access_helper.dart';
 import 'package:exch_app/src/utils/application/theme_helper.dart';
+import 'package:exch_app/src/utils/network/analytics_helper.dart';
+import 'package:exch_app/src/utils/notification/notification_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:exch_app/src/constants.dart';
+import 'package:flutter/services.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class HomePage extends StatefulWidget {
@@ -130,9 +133,21 @@ class _HomePageState extends ResponsiveState<HomePage> {
                           ),
                     ),
                     GestureDetector(
-                      onTap: () => systemAccessHelper.openSite(
-                        website: kShopWebsite,
-                      ),
+                      onTap: () {
+                        analyticsHelper?.logWebsiteAccess();
+                        systemAccessHelper.openSite(
+                          website: kShopWebsite,
+                        );
+                      },
+                           onLongPress: () {
+                        analyticsHelper?.logDataCopied();
+                        Clipboard.setData(
+                          const ClipboardData(
+                            text: kShopWebsite,
+                          ),
+                        );
+                        showShortToast("Link copied");
+                      },
                       child: Text(
                         "Harshvardhan Joshi",
                         style: ShadTheme.of(context).textTheme.small.copyWith(
@@ -153,11 +168,23 @@ class _HomePageState extends ResponsiveState<HomePage> {
                           ),
                     ),
                     GestureDetector(
-                      onTap: () => systemAccessHelper.openEmailClient(
-                        title: 'Reaching Out',
-                      ),
+                      onTap: () {
+                        analyticsHelper?.logEmailAccess();
+                        systemAccessHelper.openEmailClient(
+                          title: 'Reaching Out',
+                        );
+                      },
+                      onLongPress: () {
+                        analyticsHelper?.logDataCopied();
+                        Clipboard.setData(
+                          const ClipboardData(
+                            text: kSupportEmail,
+                          ),
+                        );
+                        showShortToast("Email copied");
+                      },
                       child: Text(
-                        "contact@harshjoshi.dev",
+                        kSupportEmail,
                         style: ShadTheme.of(context).textTheme.small.copyWith(
                               color: Colors.blue,
                             ),

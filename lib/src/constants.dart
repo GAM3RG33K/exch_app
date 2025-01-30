@@ -23,7 +23,7 @@ const String keyType = 'type';
 const String kBaseUrl = 'https://exch.harshjoshi.dev/';
 const String kAppName = 'Exch ⚡';
 const String kWebsite = 'https://exch.harshjoshi.dev';
-const String kShopWebsite = 'https://harshjoshi.dev';
+const String kShopWebsite = 'https://links.harshjoshi.dev';
 const String kWebSiteFAQ = '$kWebsite/faq';
 const String kSupportEmail = 'contact@harshjoshi.dev';
 
@@ -38,3 +38,15 @@ const double kDefaultChildAspectRatio = 14 / 10;
 const double kChildAspectRatioTabletLandscape = 21 / 9;
 const double kChildAspectRatioTabletSoundDemo = 4 / 3;
 const kToolbarSpacingInPixels = 88.0;
+
+enum EventType {
+  fetchRates,
+  selectCurrency,
+  swapCurrency,
+  convert,
+  websiteAccess,
+  emailAccess,
+  copied,
+}
+
+enum CurrencyPosition { to, from }

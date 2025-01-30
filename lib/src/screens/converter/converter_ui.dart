@@ -1,4 +1,5 @@
 import 'package:exch_app/src/components/home/currency_input_card.dart';
+import 'package:exch_app/src/constants.dart';
 import 'package:exch_app/src/models/api/rates_data.dart';
 import 'package:exch_app/src/models/currency.dart';
 import 'package:exch_app/src/utils/application/context_helper.dart';
@@ -8,6 +9,7 @@ import 'package:exch_app/src/utils/application/widgets/multi_listenable_builder.
 import 'package:exch_app/src/utils/domain/currencies.dart';
 import 'package:exch_app/src/utils/domain/currency_helper.dart';
 import 'package:exch_app/src/utils/logger/logger.dart';
+import 'package:exch_app/src/utils/network/analytics_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -132,6 +134,13 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                             if (newValue == null) return;
                             final newCurrency = latestRates[newValue];
                             if (newCurrency == null) return;
+
+                            // Log analytics
+                            analyticsHelper?.logSelectCurrency(
+                              abbr: newValue,
+                              position: CurrencyPosition.from,
+                            );
+
                             fromCurrencyNotifier.value = newCurrency;
                             toCurrencyNotifier.value =
                                 latestRates[toCurrency.abbr]!;
@@ -166,6 +175,12 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                   // Swap Button
                   IconButton(
                     onPressed: () {
+                      // Log analytics
+                      analyticsHelper?.logSwapCurrency(
+                        initialFrom: fromCurrency.abbr,
+                        initialTo: toCurrency.abbr,
+                      );
+
                       final temp = fromCurrencyNotifier.value;
                       fromCurrencyNotifier.value = toCurrencyNotifier.value;
                       toCurrencyNotifier.value = temp;
@@ -219,6 +234,12 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                             if (newValue == null) return;
                             final newCurrency = latestRates[newValue];
                             if (newCurrency == null) return;
+                            // Log analytics
+                            analyticsHelper?.logSelectCurrency(
+                              abbr: newValue,
+                              position: CurrencyPosition.to,
+                            );
+
                             toCurrencyNotifier.value = newCurrency;
                             fromCurrencyNotifier.value =
                                 latestRates[fromCurrency.abbr]!;
@@ -296,6 +317,10 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
 
   void handleConvert(num fromAmount, num exchangeRate) {
     log("handleConvert: $fromAmount, $exchangeRate");
+    analyticsHelper?.logConvert(
+      from: fromCurrencyNotifier.value.abbr,
+      to: toCurrencyNotifier.value.abbr,
+    );
     final result = fromAmount * exchangeRate;
     toAmountNotifier.value = result;
   }
