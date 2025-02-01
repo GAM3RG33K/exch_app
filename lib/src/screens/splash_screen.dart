@@ -56,11 +56,6 @@ class _SplashScreenState extends ResponsiveState<SplashScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(assetHelper.kLogo, width: 250, height: 250),
-            const Center(
-              child: SmallLoader(
-                padding: EdgeInsets.all(48),
-              ),
-            ),
           ],
         ),
       ),
