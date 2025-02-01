@@ -46,13 +46,20 @@ class StorageHelper {
     return "$today";
   }
 
-  Future<RatesData?> getLatestRates() async {
-    final key = latestRatesKey;
+  Future<RatesData?> getLatestRates({
+    String? prefKey,
+  }) async {
+    final key = prefKey ?? latestRatesKey;
     final jsonString = storage.getString(key) ?? "{}";
     final json = jsonDecode(jsonString) as Map<String, dynamic>?;
     if (json == null || json.isEmpty) return null;
     final ratesData = RatesData.fromJson(json);
     return ratesData;
+  }
+
+  Future<RatesData?> getLatestCachedRates() async {
+    final key = cachedRateDate;
+    return getLatestRates(prefKey: key);
   }
 
   Future<void> setLatestRates(RatesData ratesData) async {

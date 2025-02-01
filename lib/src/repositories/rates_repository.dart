@@ -79,10 +79,15 @@ class RatesRepository {
   }
 
   Future<RepoResponse<RatesData>?> fetchCurrencyRates(
-      BuildContext context) async {
+    BuildContext context, {
+    bool onlyCached = false,
+  }) async {
     final startTimestamp = DateTime.now().microsecondsSinceEpoch;
-    RatesData? ratesData = await storageHelper.getLatestRates();
-    if (hasCacheExpired || ratesData == null) {
+    RatesData? ratesData = await (onlyCached
+        ? storageHelper.getLatestCachedRates()
+        : storageHelper.getLatestRates());
+
+    if ((hasCacheExpired || ratesData == null) && !onlyCached) {
       ratesData = await fetchCurrencyRatesFromAPI();
     }
     final endTimestamp = DateTime.now().microsecondsSinceEpoch;

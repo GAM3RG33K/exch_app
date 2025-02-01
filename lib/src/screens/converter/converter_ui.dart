@@ -10,7 +10,9 @@ import 'package:exch_app/src/utils/domain/currencies.dart';
 import 'package:exch_app/src/utils/domain/currency_helper.dart';
 import 'package:exch_app/src/utils/logger/logger.dart';
 import 'package:exch_app/src/utils/network/analytics_helper.dart';
+import 'package:exch_app/src/utils/notification/notification_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class ConverterUI extends StatefulWidget {
@@ -286,16 +288,40 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                 final exchangeRate = values["exchangeRate"] as num;
                 return Column(
                   children: [
-                    Text(
-                      context.l10n!.converter_exchange_rate(
-                        fromCurrency.abbr,
-                        exchangeRate.toStringAsFixed(6),
-                        toCurrency.abbr,
-                      ),
-                      style: ShadTheme.of(context).textTheme.p.copyWith(
-                            color: themeHelper.fontColor1,
-                            fontSize: 14,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          context.l10n!.converter_exchange_rate(
+                            fromCurrency.abbr,
+                            exchangeRate.toStringAsFixed(6),
+                            toCurrency.abbr,
                           ),
+                          style: ShadTheme.of(context).textTheme.p.copyWith(
+                                color: themeHelper.fontColor1,
+                                fontSize: 14,
+                              ),
+                        ),
+                        GestureDetector(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.copy_outlined,
+                              size: 14,
+                              color: themeHelper.primaryColor,
+                            ),
+                          ),
+                          onTap: () {
+                            analyticsHelper?.logDataCopied();
+                            Clipboard.setData(
+                              ClipboardData(
+                                text: exchangeRate.toStringAsFixed(6),
+                              ),
+                            );
+                            showShortToast("Link copied");
+                          },
+                        )
+                      ],
                     ),
                     const SizedBox(height: 4),
                     Text(

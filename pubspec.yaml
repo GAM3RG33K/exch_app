@@ -32,6 +32,7 @@ dependencies:
   freezed_annotation: ^2.4.4
   shadcn_ui: ^0.16.0
   firebase_analytics: ^11.4.1
+  upgrader: ^11.3.1
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.1

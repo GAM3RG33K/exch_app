@@ -55,15 +55,37 @@ class _HomePageState extends ResponsiveState<HomePage> {
         ),
         centerTitle: true,
         backgroundColor: themeHelper.backgroundColor,
-        actions: const [
-          // IconButton(
-          //     onPressed: () {
-          //       Navigator.of(context).pushNamed(SettingsPage.routeName);
-          //     },
-          //     icon: const Icon(
-          //       Icons.settings,
-          //       size: 32,
-          //     )),
+        actions: [
+          GestureDetector(
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(Icons.language_outlined),
+            ),
+            onTap: () {
+              analyticsHelper?.logWebsiteAccess();
+              systemAccessHelper.openSite(website: kShopWebsite);
+            },
+            onLongPress: () {
+              analyticsHelper?.logDataCopied();
+              Clipboard.setData(const ClipboardData(text: kShopWebsite));
+              showShortToast("Link copied");
+            },
+          ),
+          GestureDetector(
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(Icons.email_outlined),
+            ),
+            onTap: () {
+              analyticsHelper?.logEmailAccess();
+              systemAccessHelper.openEmailClient(title: 'Reaching Out');
+            },
+            onLongPress: () {
+              analyticsHelper?.logDataCopied();
+              Clipboard.setData(const ClipboardData(text: kSupportEmail));
+              showShortToast("Email copied");
+            },
+          ),
         ],
       ),
       backgroundColor: themeHelper.backgroundColor2,
@@ -121,76 +143,6 @@ class _HomePageState extends ResponsiveState<HomePage> {
                           color: themeHelper.fontColor1,
                         ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      context.l10n!.home_built_by,
-                      style: ShadTheme.of(context).textTheme.small.copyWith(
-                            color: themeHelper.fontColor1,
-                          ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        analyticsHelper?.logWebsiteAccess();
-                        systemAccessHelper.openSite(
-                          website: kShopWebsite,
-                        );
-                      },
-                           onLongPress: () {
-                        analyticsHelper?.logDataCopied();
-                        Clipboard.setData(
-                          const ClipboardData(
-                            text: kShopWebsite,
-                          ),
-                        );
-                        showShortToast("Link copied");
-                      },
-                      child: Text(
-                        "Harshvardhan Joshi",
-                        style: ShadTheme.of(context).textTheme.small.copyWith(
-                              color: Colors.blue,
-                            ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      context.l10n!.home_contact_at,
-                      style: ShadTheme.of(context).textTheme.small.copyWith(
-                            color: themeHelper.fontColor1,
-                          ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        analyticsHelper?.logEmailAccess();
-                        systemAccessHelper.openEmailClient(
-                          title: 'Reaching Out',
-                        );
-                      },
-                      onLongPress: () {
-                        analyticsHelper?.logDataCopied();
-                        Clipboard.setData(
-                          const ClipboardData(
-                            text: kSupportEmail,
-                          ),
-                        );
-                        showShortToast("Email copied");
-                      },
-                      child: Text(
-                        kSupportEmail,
-                        style: ShadTheme.of(context).textTheme.small.copyWith(
-                              color: Colors.blue,
-                            ),
-                      ),
-                    ),
-                  ],
                 ),
                 const SizedBox(height: 8),
                 Row(
