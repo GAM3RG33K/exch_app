@@ -288,39 +288,39 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                 final exchangeRate = values["exchangeRate"] as num;
                 return Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          context.l10n!.converter_exchange_rate(
-                            fromCurrency.abbr,
-                            exchangeRate.toStringAsFixed(6),
-                            toCurrency.abbr,
+                    GestureDetector(
+                      onTap: () {
+                        analyticsHelper?.logDataCopied();
+                        Clipboard.setData(
+                          ClipboardData(
+                            text: exchangeRate.toStringAsFixed(6),
                           ),
-                          style: ShadTheme.of(context).textTheme.p.copyWith(
-                                color: themeHelper.fontColor1,
-                                fontSize: 14,
-                              ),
-                        ),
-                        GestureDetector(
-                          child: Padding(
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            context.l10n!.converter_exchange_rate(
+                              fromCurrency.abbr,
+                              exchangeRate.toStringAsFixed(6),
+                              toCurrency.abbr,
+                            ),
+                            style: ShadTheme.of(context).textTheme.p.copyWith(
+                                  color: themeHelper.fontColor1,
+                                  fontSize: 14,
+                                ),
+                          ),
+                          Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Icon(
                               Icons.copy_outlined,
                               size: 14,
                               color: themeHelper.primaryColor,
                             ),
-                          ),
-                          onTap: () {
-                            analyticsHelper?.logDataCopied();
-                            Clipboard.setData(
-                              ClipboardData(
-                                text: exchangeRate.toStringAsFixed(6),
-                              ),
-                            );
-                          },
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
