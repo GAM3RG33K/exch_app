@@ -10,7 +10,6 @@ import 'package:exch_app/src/utils/domain/currencies.dart';
 import 'package:exch_app/src/utils/domain/currency_helper.dart';
 import 'package:exch_app/src/utils/logger/logger.dart';
 import 'package:exch_app/src/utils/network/analytics_helper.dart';
-import 'package:exch_app/src/utils/notification/notification_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -264,6 +263,7 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                                 currency: toCurrency,
                                 initialValue: toAmount,
                                 enabled: false,
+                                allowCopy: true,
                               );
                             }),
                       ],
@@ -318,7 +318,6 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                                 text: exchangeRate.toStringAsFixed(6),
                               ),
                             );
-                            showShortToast("Link copied");
                           },
                         )
                       ],
