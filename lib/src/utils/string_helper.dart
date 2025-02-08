@@ -23,3 +23,28 @@ extension NumberUtilsExtension on num? {
     return "${minutes}m ${seconds}s";
   }
 }
+
+extension DateUtilsExtension on DateTime? {
+  String? get toIso8601String {
+    final value = this;
+    if (value == null) {
+      return null;
+    }
+    return value.toIso8601String();
+  }
+
+  String? get dateOnly {
+    final value = toIso8601String;
+    return value?.split("T").first;
+  }
+
+  String? get timeWithZoneOnly {
+    final value = toIso8601String;
+    return value?.split("T").last;
+  }
+
+  String? get timeOnly {
+    final value = timeWithZoneOnly;
+    return value?.split(".").first;
+  }
+}

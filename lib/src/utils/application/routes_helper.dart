@@ -1,5 +1,6 @@
+import 'package:exch_app/src/screens/home_page.dart';
+import 'package:exch_app/src/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:exch_app/src/screens/screens.dart';
 
 RouteFactory onGenerateRoute = (settings) {
   if (settings.name == SplashScreen.routeName) {
@@ -10,9 +11,9 @@ RouteFactory onGenerateRoute = (settings) {
   //   return _buildRoute(settings, (ctx) => const IntroScreen());
   // }
 
-  if (settings.name == SettingsPage.routeName) {
-    return _buildRoute(settings, (ctx) => const SettingsPage());
-  }
+  // if (settings.name == SettingsPage.routeName) {
+  //   return _buildRoute(settings, (ctx) => const SettingsPage());
+  // }
 
   return _buildRoute(settings, (ctx) => const HomePage());
 };

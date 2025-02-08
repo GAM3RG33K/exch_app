@@ -6,28 +6,28 @@ A modern currency converter built with flutter.
 
 ### Core Features Checklist
 - [X] Clean, minimalist interface
-- [ ] Real-time currency conversion
-- [ ] Support for major currencies (USD, EUR, GBP & INR)
-- [ ] Support for additional international currencies
-- [ ] Instant calculation updates
-- [ ] Offline mode
+- [X] Real-time currency conversion
+- [X] Support for major currencies (USD, EUR, GBP & INR)
+- [X] Support for additional international currencies
+- [X] Instant calculation updates
+- [] Offline mode
 
 ### User Interface
-- [ ] Currency input fields
-- [ ] Currency selection dropdowns
-- [ ] Currency swap functionality
-- [ ] Loading states
-- [ ] Error handling
+- [X] Currency input fields
+- [X] Currency selection dropdowns
+- [X] Currency swap functionality
+- [X] Loading states
+- [X] Error handling
 - [ ] Rate refresh indicator
 
 ### Technical Implementation
 - [x] Flutter App setup
-- [ ] Component architecture
-- [ ] Currency service implementation
-- [ ] Mock exchange rates
-- [ ] API integration
-- [ ] Rate caching
-- [ ] Error boundaries
+- [X] Component architecture
+- [X] Currency service implementation
+- [X] Mock exchange rates
+- [X] API integration
+- [X] Rate caching
+- [X] Error boundaries
 - [ ] Unit tests
 
 ### Future Enhancements
@@ -43,10 +43,10 @@ A modern currency converter built with flutter.
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/exch.git
+git clone https://github.com/GAM3RG33K/exch_app.git
 
 # Navigate to project directory
-cd exch
+cd exch-app
 
 # Install dependencies
 flutter pub get
@@ -79,4 +79,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - GitHub: [@GAM3RG33K](https://github.com/GAM3RG33K)
 
 ## Acknowledgments
-- Exchange rates data provided by [Exchange Rate API]
+- Exchange rates data provided by [Exchange Rate API](https://exch.harshjoshi.dev/api/rates)

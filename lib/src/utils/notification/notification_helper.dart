@@ -1,7 +1,10 @@
+import 'package:exch_app/src/utils/application/context_helper.dart';
+import 'package:exch_app/src/utils/application/system_access_helper.dart';
+import 'package:exch_app/src/utils/application/theme_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:exch_app/src/constants.dart';
-import 'package:exch_app/src/utils/utils.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 class ActionData {
   final String title;
@@ -117,9 +120,9 @@ Future<bool?> showConfirmationDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         backgroundColor: themeHelper.backgroundColor3,
         title: title.isNotEmpty ? Text(title) : null,
-        titleTextStyle: themeHelper.alertTitleTextStyle,
+        titleTextStyle: ShadTheme.of(context).textTheme.h2,
         content: message.isNotEmpty ? Text(message) : null,
-        contentTextStyle: themeHelper.alertContentTextStyle,
+        contentTextStyle: ShadTheme.of(context).textTheme.p,
         actionsAlignment: MainAxisAlignment.spaceAround,
         actions: <Widget>[
           InkWell(
@@ -128,9 +131,9 @@ Future<bool?> showConfirmationDialog(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
               child: Text(
                 cancelAction.title,
-                style: themeHelper.bodyTextStyle.copyWith(
-                  color: themeHelper.fontColor3,
-                ),
+                style: ShadTheme.of(context).textTheme.p.copyWith(
+                      color: themeHelper.fontColor3,
+                    ),
               ),
             ),
           ),
@@ -140,9 +143,9 @@ Future<bool?> showConfirmationDialog(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
               child: Text(
                 confirmAction.title,
-                style: themeHelper.bodyTextStyle.copyWith(
-                  color: themeHelper.fontColor3,
-                ),
+                style: ShadTheme.of(context).textTheme.p.copyWith(
+                      color: themeHelper.fontColor3,
+                    ),
               ),
             ),
           ),
@@ -192,9 +195,9 @@ Future<void> showAlertDialog(
         scrollable: true,
         backgroundColor: themeHelper.backgroundColor3,
         title: title.isNotEmpty ? Text(title) : null,
-        titleTextStyle: themeHelper.alertTitleTextStyle,
+        titleTextStyle: ShadTheme.of(context).textTheme.h2,
         content: message.isNotEmpty ? Text(message) : null,
-        contentTextStyle: themeHelper.alertContentTextStyle,
+        contentTextStyle: ShadTheme.of(context).textTheme.p,
         actionsAlignment: MainAxisAlignment.spaceAround,
         actions: actions!.map(
           (e) {
@@ -205,9 +208,9 @@ Future<void> showAlertDialog(
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                 child: Text(
                   e.title,
-                  style: themeHelper.subtitleTextStyle.copyWith(
-                    color: themeHelper.fontColor3,
-                  ),
+                  style: ShadTheme.of(context).textTheme.p.copyWith(
+                        color: themeHelper.fontColor3,
+                      ),
                 ),
               ),
             );
