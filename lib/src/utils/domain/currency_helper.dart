@@ -32,6 +32,12 @@ class CurrencyHelper {
 }
 
 extension CurrencyString on String? {
+
+  bool get isValidCurrencyAbbr {
+    if (this == null) return false;
+    return currencyNameMap[this] != null && currencySymbolMap[this] != null;
+  }
+
   String? get currencyName {
     if (this == null) return null;
     return currencyNameMap[this];

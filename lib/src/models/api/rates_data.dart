@@ -1,4 +1,5 @@
 import 'package:exch_app/src/models/currency.dart';
+import 'package:exch_app/src/utils/domain/currency_helper.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'rates_data.freezed.dart';
@@ -19,9 +20,17 @@ extension CurrenctFetchExtension on RatesData {
   Map<String, Currency> get rateInCurrency {
     final entries = rates.entries
         .map(
-          (e) => MapEntry(e.key, Currency.fromAbbr(abbr: e.key, rate: e.value)),
+          (e) {
+            final abbr = e.key;
+            if (!abbr.isValidCurrencyAbbr) return null;
+            final currency = Currency.fromAbbr(abbr: abbr, rate: e.value);
+            return MapEntry(abbr, currency);
+          },
         )
-        .toList();
+        .where((element) => element != null)
+        .toList()
+        .cast<MapEntry<String, Currency>>();
+
     return Map.fromEntries(entries);
   }
 }

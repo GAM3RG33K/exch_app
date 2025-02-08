@@ -20,7 +20,6 @@ const kBND = "BND";
 const kBOB = "BOB";
 const kBRL = "BRL";
 const kBSD = "BSD";
-const kBTC = "BTC";
 const kBTN = "BTN";
 const kBWP = "BWP";
 const kBYN = "BYN";
@@ -192,7 +191,6 @@ const currencyNameMap = <String, String>{
   kBOB: "Bolivian Boliviano",
   kBRL: "Brazilian Real",
   kBSD: "Bahamian Dollar",
-  kBTC: "Bitcoin",
   kBTN: "Bhutanese Ngultrum",
   kBWP: "Botswana Pula",
   kBYN: "Belarusian Ruble",
@@ -365,7 +363,6 @@ const currencySymbolMap = <String, String>{
   kBOB: r"Bs.",
   kBRL: r"R$",
   kBSD: r"$",
-  kBTC: r"₿",
   kBTN: r"Nu.",
   kBWP: r"P",
   kBYN: r"Br",

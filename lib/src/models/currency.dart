@@ -27,4 +27,7 @@ class Currency {
       rate: rate,
     );
   }
+
+  bool get isValidCurrency => abbr.isValidCurrencyAbbr;
+
 }
