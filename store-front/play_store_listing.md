@@ -72,8 +72,8 @@ v0.1.0+1 (from pubspec.yaml):
 - [X] Description includes all features from README.md
 - [X] Screenshots show actual current UI (reference home_page.dart)
 - [ ] Icon passes Play Store guidelines (no trademark violations)
-- [ ] Privacy policy link is functional and updated
-- [ ] Content rating questionnaire completed
+- [X] Privacy policy link is functional and updated
+- [X] Content rating questionnaire completed
 - [ ] Store listing preview tested in Play Console
 - [ ] Localized listings for all supported languages (from intl_en.arb)
 
