@@ -1,3 +1,4 @@
+import 'package:exch_app/src/screens/converter/currency_selection_page.dart';
 import 'package:exch_app/src/screens/home_page.dart';
 import 'package:exch_app/src/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -11,15 +12,20 @@ RouteFactory onGenerateRoute = (settings) {
   //   return _buildRoute(settings, (ctx) => const IntroScreen());
   // }
 
-  // if (settings.name == SettingsPage.routeName) {
-  //   return _buildRoute(settings, (ctx) => const SettingsPage());
-  // }
+  if (settings.name == CurrencySelectionPage.routeName) {
+    return _buildRoute<String>(
+      settings,
+      (ctx) => CurrencySelectionPage.fromRouteArguments(
+        settings.arguments as Map<String, dynamic>,
+      ),
+    );
+  }
 
   return _buildRoute(settings, (ctx) => const HomePage());
 };
 
-MaterialPageRoute _buildRoute(RouteSettings settings, WidgetBuilder builder) {
-  return MaterialPageRoute(
+MaterialPageRoute _buildRoute<T>(RouteSettings settings, WidgetBuilder builder) {
+  return MaterialPageRoute<T>(
     settings: settings,
     builder: builder,
   );
