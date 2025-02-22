@@ -7,6 +7,8 @@ import 'package:get_it/get_it.dart';
 
 Future<void> initConnectivityHelper() async {
   final connection = InternetConnection.createInstance(
+    checkInterval: const Duration(minutes: 1),
+    useDefaultOptions: false,
     customCheckOptions: [
       InternetCheckOption(uri: Uri.parse(kBaseUrl)),
     ],
@@ -53,7 +55,7 @@ class ConnectivityHelper {
   void _handleConnectivityResult(InternetStatus status) {
     _streamController.sink.add(status);
 
-    final isConnected = status == InternetStatus.connected;
+    final isConnected = status.isOnline;
 
     // If coming back online and rates repository exists, fetch new rates
     if (isConnected && GetIt.instance.isRegistered<RatesRepository>()) {
