@@ -51,6 +51,7 @@ class _HomePageState extends ResponsiveState<HomePage> {
   @override
   Widget buildMobile(BuildContext context) {
     return StreamBuilder(
+      initialData: InternetStatus.connected,
       stream: connectivityHelper.connectivityStatusUpdates,
       builder: (context, AsyncSnapshot<InternetStatus> snapshot) {
         final isOnline = snapshot.data?.isOnline ?? false;
