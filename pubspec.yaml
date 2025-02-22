@@ -1,5 +1,5 @@
 name: exch_app
-description: A modern currency converter built with flutter
+description: A modern, minimal, real-time currency converter
 publish_to: 'none'
 
 version: 0.1.0+1
