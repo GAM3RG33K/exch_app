@@ -1,39 +1,12 @@
 # Exch ⚡
 
-A modern currency converter built with flutter.
+A modern currency converter built with Flutter that provides:
 
-## Features
-
-### Core Features Checklist
-- [X] Clean, minimalist interface
-- [X] Real-time currency conversion
-- [X] Support for major currencies (USD, EUR, GBP & INR)
-- [X] Support for additional international currencies
-- [X] Instant calculation updates
-- [] Offline mode
-
-### User Interface
-- [X] Currency input fields
-- [X] Currency selection dropdowns
-- [X] Currency swap functionality
-- [X] Loading states
-- [X] Error handling
-- [ ] Rate refresh indicator
-
-### Technical Implementation
-- [x] Flutter App setup
-- [X] Component architecture
-- [X] Currency service implementation
-- [X] Mock exchange rates
-- [X] API integration
-- [X] Rate caching
-- [X] Error boundaries
-- [ ] Unit tests
-
-### Future Enhancements
-- [ ] Historical rate tracking
-- [ ] Rate trends visualization
-- [ ] Multiple currency comparison
+✓ Real-time exchange rates for 150+ currencies
+✓ Clean, minimalist interface
+✓ Instant calculation updates
+✓ Offline mode support
+✓ Daily rate updates
 
 ## Getting Started
 
