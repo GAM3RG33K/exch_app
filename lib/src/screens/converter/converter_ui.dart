@@ -13,6 +13,7 @@ import 'package:exch_app/src/utils/network/analytics_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:exch_app/src/screens/converter/currency_selection_page.dart';
 
 class ConverterUI extends StatefulWidget {
   final RatesData latestRates;
@@ -109,36 +110,28 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                     ),
                     child: Column(
                       children: [
-                        DropdownButton<String>(
-                          value: fromCurrency.abbr,
-                          isExpanded: true,
-                          underline: const SizedBox(),
-                          dropdownColor: themeHelper.backgroundColor,
-                          icon: Icon(
-                            Icons.keyboard_arrow_down,
-                            color: themeHelper.fontColor1,
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: themeHelper.backgroundColor,
+                            foregroundColor: themeHelper.fontColor1,
+                            minimumSize: const Size.fromHeight(48),
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          items: currencyNameMap.keys.map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                "${currencySymbolMap[value]} - ${currencyNameMap[value]}",
-                                style:
-                                    ShadTheme.of(context).textTheme.p.copyWith(
-                                          color: themeHelper.fontColor1,
-                                        ),
-                              ),
+                          onPressed: () async {
+                            final result = await Navigator.of(safeContext!)
+                                .pushNamed<String>(
+                              CurrencySelectionPage.routeName,
+                              arguments: {
+                                'selectedCurrency': fromCurrency.abbr,
+                                'title': 'Select From Currency',
+                              },
                             );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            if (newValue == null) return;
-                            final newCurrency = latestRates[newValue];
+
+                            if (result == null) return;
+                            final newCurrency = latestRates[result];
                             if (newCurrency == null) return;
 
-                            // Log analytics
                             analyticsHelper?.logSelectCurrency(
-                              abbr: newValue,
+                              abbr: result,
                               position: CurrencyPosition.from,
                             );
 
@@ -155,6 +148,22 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                               exchangeRateNotifier.value,
                             );
                           },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "${currencySymbolMap[fromCurrency.abbr]} - ${currencyNameMap[fromCurrency.abbr]}",
+                                style:
+                                    ShadTheme.of(context).textTheme.p.copyWith(
+                                          color: themeHelper.fontColor1,
+                                        ),
+                              ),
+                              Icon(
+                                Icons.keyboard_arrow_right,
+                                color: themeHelper.fontColor1,
+                              ),
+                            ],
+                          ),
                         ),
                         CurrencyInputCard(
                           key: UniqueKey(),
@@ -209,35 +218,28 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                     ),
                     child: Column(
                       children: [
-                        DropdownButton<String>(
-                          value: toCurrency.abbr,
-                          isExpanded: true,
-                          underline: const SizedBox(),
-                          dropdownColor: themeHelper.backgroundColor,
-                          icon: Icon(
-                            Icons.keyboard_arrow_down,
-                            color: themeHelper.fontColor1,
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: themeHelper.backgroundColor,
+                            foregroundColor: themeHelper.fontColor1,
+                            minimumSize: const Size.fromHeight(48),
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          items: currencyNameMap.keys.map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                "${currencySymbolMap[value]} - ${currencyNameMap[value]}",
-                                style:
-                                    ShadTheme.of(context).textTheme.p.copyWith(
-                                          color: themeHelper.fontColor1,
-                                        ),
-                              ),
+                          onPressed: () async {
+                            final result = await Navigator.of(safeContext!)
+                                .pushNamed<String>(
+                              CurrencySelectionPage.routeName,
+                              arguments: {
+                                'selectedCurrency': toCurrency.abbr,
+                                'title': 'Select To Currency',
+                              },
                             );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            if (newValue == null) return;
-                            final newCurrency = latestRates[newValue];
+
+                            if (result == null) return;
+                            final newCurrency = latestRates[result];
                             if (newCurrency == null) return;
-                            // Log analytics
+
                             analyticsHelper?.logSelectCurrency(
-                              abbr: newValue,
+                              abbr: result,
                               position: CurrencyPosition.to,
                             );
 
@@ -254,6 +256,22 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                               exchangeRateNotifier.value,
                             );
                           },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "${currencySymbolMap[toCurrency.abbr]} - ${currencyNameMap[toCurrency.abbr]}",
+                                style:
+                                    ShadTheme.of(context).textTheme.p.copyWith(
+                                          color: themeHelper.fontColor1,
+                                        ),
+                              ),
+                              Icon(
+                                Icons.keyboard_arrow_right,
+                                color: themeHelper.fontColor1,
+                              ),
+                            ],
+                          ),
                         ),
                         ValueListenableBuilder(
                             valueListenable: toAmountNotifier,
