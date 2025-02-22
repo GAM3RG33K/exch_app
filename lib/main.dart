@@ -15,6 +15,7 @@ import 'package:exch_app/src/utils/localization/localization_helper.dart';
 import 'package:exch_app/src/utils/logger/logger.dart';
 import 'package:exch_app/src/utils/network/analytics_helper.dart';
 import 'package:exch_app/src/utils/network/api_helper.dart';
+import 'package:exch_app/src/utils/network/connectivity_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -68,6 +69,7 @@ initializeAppDeependencies() async {
   await initThemeHelper();
   await initAssetHelper();
   await initStorageHelper();
+  await initConnectivityHelper();
   await initSystemAccessHelper();
   await initApiHelper();
   await initCurrencyHelper();

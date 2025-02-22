@@ -11,7 +11,6 @@ import 'package:exch_app/src/utils/network/api_helper.dart';
 import 'package:exch_app/src/utils/string_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:exch_app/src/utils/application/context_helper.dart';
 
 class RepoError extends Error {
   final String message;
@@ -60,6 +59,7 @@ class RatesRepository {
 
   final latestRates = ValueNotifier<List<Currency>>(<Currency>[]);
   final latestRateDate = ValueNotifier<String>("");
+  final ValueNotifier<bool> isFetching = ValueNotifier(false);
 
   bool get hasCacheExpired {
     final today = DateTime.now().dateOnly;
@@ -68,26 +68,45 @@ class RatesRepository {
   }
 
   Future<RatesData?> fetchCurrencyRatesFromAPI() async {
-    final response = await apiHelper.get('/api/rates/latest');
-    final data = (response.data as Map?);
-    if (data == null || data.isEmpty) {
-      return null;
+    try {
+      final response = await apiHelper.get('/api/rates/latest');
+      final data = (response.data as Map?);
+      if (data == null || data.isEmpty) {
+        return null;
+      }
+      unawaited(analyticsHelper?.logFetchRates());
+      final ratesData = RatesData.fromJson(data.cast<String, dynamic>());
+      return ratesData;
+    } catch (ex) {
+      log("Unable to fetch exchange rates", error: ex);
     }
-    unawaited(analyticsHelper?.logFetchRates());
-    final ratesData = RatesData.fromJson(data.cast<String, dynamic>());
-    return ratesData;
+    return null;
   }
 
-  Future<RepoResponse<RatesData>?> fetchCurrencyRates(
-    BuildContext context, {
-    bool onlyCached = false,
+  Future<RepoResponse<RatesData>?> fetchCurrencyRates({
+    required String errorString,
+    bool onlyCached = false
   }) async {
-    final startTimestamp = DateTime.now().microsecondsSinceEpoch;
-    RatesData? ratesData = await (onlyCached
-        ? storageHelper.getLatestCachedRates()
-        : storageHelper.getLatestRates());
+    if (onlyCached) {
+      final startTimestamp = DateTime.now().microsecondsSinceEpoch;
+      final cachedRates = await storageHelper.getLatestCachedRates();
+      final endTimestamp = DateTime.now().microsecondsSinceEpoch;
 
-    if ((hasCacheExpired || ratesData == null) && !onlyCached) {
+      final difference = endTimestamp - startTimestamp;
+
+      final turnAroundTime = difference ~/ (1000);
+      return RepoResponse<RatesData>(
+        turnAroundTime: turnAroundTime,
+        data: cachedRates,
+      );
+    }
+
+    isFetching.value = true;
+    final startTimestamp = DateTime.now().microsecondsSinceEpoch;
+
+    RatesData? ratesData = await storageHelper.getLatestRates();
+
+    if ((hasCacheExpired || ratesData == null)) {
       ratesData = await fetchCurrencyRatesFromAPI();
     }
     final endTimestamp = DateTime.now().microsecondsSinceEpoch;
@@ -95,14 +114,19 @@ class RatesRepository {
     final difference = endTimestamp - startTimestamp;
 
     final turnAroundTime = difference ~/ (1000);
+
+    isFetching.value = false;
+
     if (ratesData == null) {
       return RepoResponse<RatesData>(
         turnAroundTime: turnAroundTime,
         // ignore: use_build_context_synchronously
-        error: RepoError(context.l10n!.repo_error_message),
+        error: RepoError(errorString),
       );
     }
+
     storageHelper.setLatestRates(ratesData);
+
     return RepoResponse<RatesData>(
       turnAroundTime: turnAroundTime,
       data: ratesData,

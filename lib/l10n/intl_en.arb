@@ -61,5 +61,5 @@
   "home_built_by": "Built by ",
   "home_contact_at": "Contact: ",
   "home_build": "Build: ",
-  "repo_error_message": "Could not fetch currency rates, to use, Please try again!"
+  "repo_error_message": "Please check internet and try again!"
 }
