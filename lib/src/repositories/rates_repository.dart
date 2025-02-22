@@ -68,19 +68,24 @@ class RatesRepository {
   }
 
   Future<RatesData?> fetchCurrencyRatesFromAPI() async {
-    final response = await apiHelper.get('/api/rates/latest');
-    final data = (response.data as Map?);
-    if (data == null || data.isEmpty) {
-      return null;
+    try {
+      final response = await apiHelper.get('/api/rates/latest');
+      final data = (response.data as Map?);
+      if (data == null || data.isEmpty) {
+        return null;
+      }
+      unawaited(analyticsHelper?.logFetchRates());
+      final ratesData = RatesData.fromJson(data.cast<String, dynamic>());
+      return ratesData;
+    } catch (ex) {
+      log("Unable to fetch exchange rates", error: ex);
     }
-    unawaited(analyticsHelper?.logFetchRates());
-    final ratesData = RatesData.fromJson(data.cast<String, dynamic>());
-    return ratesData;
+    return null;
   }
 
   Future<RepoResponse<RatesData>?> fetchCurrencyRates({
     required String errorString,
-    bool onlyCached = false,
+    bool onlyCached = false
   }) async {
     if (onlyCached) {
       final startTimestamp = DateTime.now().microsecondsSinceEpoch;
@@ -97,7 +102,6 @@ class RatesRepository {
     }
 
     isFetching.value = true;
-
     final startTimestamp = DateTime.now().microsecondsSinceEpoch;
 
     RatesData? ratesData = await storageHelper.getLatestRates();

@@ -1,50 +1,46 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:exch_app/src/repositories/rates_repository.dart';
-import 'package:exch_app/src/utils/network/connectivity_helper.dart';
 import 'package:exch_app/src/utils/notification/notification_helper.dart';
 import 'package:flutter/material.dart';
 
 class NetworkStatusDot extends StatelessWidget {
   final RatesRepository ratesRepository;
-  const NetworkStatusDot({super.key, required this.ratesRepository});
+  final bool isOnline;
+  const NetworkStatusDot({
+    super.key,
+    required this.isOnline,
+    required this.ratesRepository,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: connectivityHelper.connectivityStatusUpdates,
-      builder: (context, AsyncSnapshot<ConnectivityResult> snapshot) {
-        final isOnline = snapshot.data?.isOnline ?? false;
+    return ListenableBuilder(
+      listenable: ratesRepository.isFetching,
+      builder: (context, _) {
+        final isFetching = ratesRepository.isFetching.value;
 
-        return ListenableBuilder(
-          listenable: ratesRepository.isFetching,
-          builder: (context, _) {
-            final isFetching = ratesRepository.isFetching.value;
+        Color dotColor;
+        bool shouldBlink = false;
 
-            Color dotColor;
-            bool shouldBlink = false;
+        if (isFetching) {
+          dotColor = Colors.yellow;
+          shouldBlink = true;
+        } else if (isOnline) {
+          dotColor = Colors.green;
+        } else {
+          dotColor = Colors.red;
+        }
 
-            if (isFetching) {
-              dotColor = Colors.yellow;
-              shouldBlink = true;
-            } else if (isOnline) {
-              dotColor = Colors.green;
-            } else {
-              dotColor = Colors.red;
-            }
-
-            return GestureDetector(
-              onTap: () => showMessage(isOnline, isFetching),
-              child: Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: AbsorbPointer(
-                  child: _NetworkDot(
-                    color: dotColor,
-                    shouldBlink: shouldBlink,
-                  ),
-                ),
+        return GestureDetector(
+          onTap: () => showMessage(isOnline, isFetching),
+          child: Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: AbsorbPointer(
+              child: _NetworkDot(
+                color: dotColor,
+                shouldBlink: shouldBlink,
               ),
-            );
-          },
+            ),
+          ),
         );
       },
     );
