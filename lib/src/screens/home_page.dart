@@ -1,5 +1,6 @@
 import 'package:exch_app/src/components/home/error.dart';
 import 'package:exch_app/src/components/home/fetching_rates_loader.dart';
+import 'package:exch_app/src/components/network_status_dot.dart';
 import 'package:exch_app/src/models/api/rates_data.dart';
 import 'package:exch_app/src/repositories/rates_repository.dart';
 import 'package:exch_app/src/components/home/oops.dart';
@@ -49,9 +50,17 @@ class _HomePageState extends ResponsiveState<HomePage> {
   Widget buildMobile(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          kAppName,
-          style: ShadTheme.of(context).textTheme.h3,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              kAppName,
+              style: ShadTheme.of(context).textTheme.h3,
+            ),
+            NetworkStatusDot(
+              ratesRepository: ratesRepository,
+            ),
+          ],
         ),
         centerTitle: true,
         backgroundColor: themeHelper.backgroundColor,
@@ -78,7 +87,7 @@ class _HomePageState extends ResponsiveState<HomePage> {
             ),
             onTap: () {
               analyticsHelper?.logEmailAccess();
-              systemAccessHelper.openEmailClient(title: 'Reaching Out');
+              systemAccessHelper.openEmailClient();
             },
             onLongPress: () {
               analyticsHelper?.logDataCopied();
@@ -91,7 +100,9 @@ class _HomePageState extends ResponsiveState<HomePage> {
       backgroundColor: themeHelper.backgroundColor2,
       body: Center(
         child: FutureBuilder<RepoResponse<RatesData>?>(
-          future: ratesRepository.fetchCurrencyRates(context),
+          future: ratesRepository.fetchCurrencyRates(
+            errorString: context.l10n!.repo_error_message,
+          ),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               final data = snapshot.data;

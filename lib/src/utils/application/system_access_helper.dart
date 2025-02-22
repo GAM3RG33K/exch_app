@@ -51,25 +51,40 @@ class SystemAccessHelper {
 
   bool get isIOS => Platform.isIOS;
 
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((MapEntry<String, String> e) =>
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
+  }
+
   Future<bool> openEmailClient({
     String to = kSupportEmail,
-    required String title,
+    String? title,
     String? body,
   }) async {
-    final emailUri = Uri(scheme: 'mailto', path: to, queryParameters: {
-      'subject': title,
-      if (body != null && body.isNotEmpty) "body": body,
-    });
+    final emailUri = Uri(
+        scheme: 'mailto',
+        path: to,
+        query: encodeQueryParameters({
+          'subject': title ?? "",
+          "body": body ?? "",
+        }));
 
-    final canLaunch = await canLaunchUrl(emailUri);
+    // final canLaunch = await canLaunchUrl(emailUri);
 
-    if (!canLaunch) {
+    // if (!canLaunch) {
+    //   showShortToast('Unable to open Email client on this device');
+    //   return false;
+    // }
+
+    try {
+      log('Email uri: $emailUri');
+      return launchUrl(emailUri);
+    } catch (ex) {
       showShortToast('Unable to open Email client on this device');
       return false;
     }
-
-    log('Email uri: $emailUri');
-    return launchUrl(emailUri);
   }
 
   Future<bool> openSite({
