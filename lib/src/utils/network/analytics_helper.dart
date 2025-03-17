@@ -11,7 +11,7 @@ Future<void> initAnalyticsHelper() async {
     analyticsHelper,
   );
   assert(GetIt.instance.isRegistered<AnalyticsHelper>());
-  log('Registered Api Helper Dependency');
+  log('Registered Analytics Helper Dependency');
 }
 
 AnalyticsHelper? get analyticsHelper {

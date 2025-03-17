@@ -28,6 +28,8 @@ class CurrencyInputCard extends StatefulWidget {
 class _CurrencyInputCardState extends State<CurrencyInputCard> {
   late String selectedCurrencyAbbr;
   final TextEditingController controller = TextEditingController();
+  final FocusNode focusNode = FocusNode();
+  bool _initialFocusComplete = false;
 
   String get initialValue =>
       widget.initialValue.toStringAsFixed(!widget.enabled ? 2 : 0);
@@ -36,6 +38,25 @@ class _CurrencyInputCardState extends State<CurrencyInputCard> {
     super.initState();
     selectedCurrencyAbbr = widget.currency.abbr;
     controller.text = initialValue;
+
+    // Add listener to focus node to select all text on first focus
+    focusNode.addListener(() {
+      if (widget.enabled && focusNode.hasFocus && !_initialFocusComplete) {
+        // Select all text in the field
+        controller.selection = TextSelection(
+          baseOffset: 0,
+          extentOffset: controller.text.length,
+        );
+        _initialFocusComplete = true;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -55,6 +76,7 @@ class _CurrencyInputCardState extends State<CurrencyInputCard> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: ShadInput(
           controller: controller,
+          focusNode: focusNode,
           enabled: widget.enabled,
           autofocus: widget.enabled,
           onChanged: (value) =>

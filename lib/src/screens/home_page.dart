@@ -51,86 +51,86 @@ class _HomePageState extends ResponsiveState<HomePage> {
   @override
   Widget buildMobile(BuildContext context) {
     return StreamBuilder(
-      initialData: InternetStatus.connected,
-      stream: connectivityHelper.connectivityStatusUpdates,
-      builder: (context, AsyncSnapshot<InternetStatus> snapshot) {
-        final isOnline = snapshot.data?.isOnline ?? false;
-        return Scaffold(
-          appBar: AppBar(
-            title: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  kAppName,
-                  style: ShadTheme.of(context).textTheme.h3,
+        initialData: InternetStatus.connected,
+        stream: connectivityHelper.connectivityStatusUpdates,
+        builder: (context, AsyncSnapshot<InternetStatus> snapshot) {
+          final isOnline = snapshot.data?.isOnline ?? false;
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: AppBar(
+              title: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    kAppName,
+                    style: ShadTheme.of(context).textTheme.h3,
+                  ),
+                  NetworkStatusDot(
+                    isOnline: isOnline,
+                    ratesRepository: ratesRepository,
+                  ),
+                ],
+              ),
+              centerTitle: true,
+              backgroundColor: themeHelper.backgroundColor,
+              actions: [
+                GestureDetector(
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(Icons.language_outlined),
+                  ),
+                  onTap: () {
+                    analyticsHelper?.logWebsiteAccess();
+                    systemAccessHelper.openSite(website: kShopWebsite);
+                  },
+                  onLongPress: () {
+                    analyticsHelper?.logDataCopied();
+                    Clipboard.setData(const ClipboardData(text: kShopWebsite));
+                    showShortToast("Link copied");
+                  },
                 ),
-                NetworkStatusDot(
-                  isOnline: isOnline,
-                  ratesRepository: ratesRepository,
+                GestureDetector(
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(Icons.email_outlined),
+                  ),
+                  onTap: () {
+                    analyticsHelper?.logEmailAccess();
+                    systemAccessHelper.openEmailClient();
+                  },
+                  onLongPress: () {
+                    analyticsHelper?.logDataCopied();
+                    Clipboard.setData(const ClipboardData(text: kSupportEmail));
+                    showShortToast("Email copied");
+                  },
                 ),
               ],
             ),
-            centerTitle: true,
-            backgroundColor: themeHelper.backgroundColor,
-            actions: [
-              GestureDetector(
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(Icons.language_outlined),
+            backgroundColor: themeHelper.backgroundColor2,
+            body: Center(
+              child: FutureBuilder<RepoResponse<RatesData>?>(
+                future: ratesRepository.fetchCurrencyRates(
+                  errorString: context.l10n!.repo_error_message,
                 ),
-                onTap: () {
-                  analyticsHelper?.logWebsiteAccess();
-                  systemAccessHelper.openSite(website: kShopWebsite);
-                },
-                onLongPress: () {
-                  analyticsHelper?.logDataCopied();
-                  Clipboard.setData(const ClipboardData(text: kShopWebsite));
-                  showShortToast("Link copied");
-                },
-              ),
-              GestureDetector(
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(Icons.email_outlined),
-                ),
-                onTap: () {
-                  analyticsHelper?.logEmailAccess();
-                  systemAccessHelper.openEmailClient();
-                },
-                onLongPress: () {
-                  analyticsHelper?.logDataCopied();
-                  Clipboard.setData(const ClipboardData(text: kSupportEmail));
-                  showShortToast("Email copied");
-                },
-              ),
-            ],
-          ),
-          backgroundColor: themeHelper.backgroundColor2,
-          body: Center(
-            child: FutureBuilder<RepoResponse<RatesData>?>(
-              future: ratesRepository.fetchCurrencyRates(
-                errorString: context.l10n!.repo_error_message,
-              ),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  final data = snapshot.data;
-                  if (data == null) {
-                    return const OopsScreen();
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    final data = snapshot.data;
+                    if (data == null) {
+                      return const OopsScreen();
+                    }
+                    if (data.error != null) {
+                      return ErrorScreen(
+                        error: data.error!,
+                      );
+                    }
+                    return _buildHomeUI(context, data);
                   }
-                  if (data.error != null) {
-                    return ErrorScreen(
-                      error: data.error!,
-                    );
-                  }
-                  return _buildHomeUI(context, data);
-                }
-                return const FetchingRatesLoader();
-              },
+                  return const FetchingRatesLoader();
+                },
+              ),
             ),
-          ),
-        );
-      }
-    );
+          );
+        });
   }
 
   Widget _buildHomeUI(

@@ -53,28 +53,28 @@ class _SplashScreenState extends ResponsiveState<SplashScreen> {
   Widget buildMobile(BuildContext context) {
     return Scaffold(
       backgroundColor: themeHelper.backgroundColor,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(assetHelper.kLogo, width: 250, height: 250),
-          ],
-        ),
+      body: const Center(
+        // child: Column(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   crossAxisAlignment: CrossAxisAlignment.center,
+        //   children: [
+        //     // Image.asset(assetHelper.kLogo, width: 250, height: 250),
+        //   ],
+        // ),
       ),
     );
   }
 
   @override
   Widget buildTablet(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(assetHelper.kLogo, width: 640, height: 640),
-            const Center(
+            // Image.asset(assetHelper.kLogo, width: 640, height: 640),
+            Center(
               child: SmallLoader(
                 padding: EdgeInsets.all(48),
               ),
