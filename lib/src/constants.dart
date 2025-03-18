@@ -47,6 +47,8 @@ enum EventType {
   websiteAccess,
   emailAccess,
   copied,
+  remoteMessageReceived,
+  remoteMessageHandled,
 }
 
 enum CurrencyPosition { to, from }

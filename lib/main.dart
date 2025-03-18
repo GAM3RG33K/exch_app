@@ -6,6 +6,7 @@ import 'package:exch_app/src/repositories/rates_repository.dart';
 import 'package:exch_app/src/screens/splash_screen.dart';
 import 'package:exch_app/src/utils/application/asset_helper.dart';
 import 'package:exch_app/src/utils/application/context_helper.dart';
+import 'package:exch_app/src/utils/application/deeplink_handler.dart';
 import 'package:exch_app/src/utils/application/routes_helper.dart';
 import 'package:exch_app/src/utils/application/storage/storage_helper.dart';
 import 'package:exch_app/src/utils/application/system_access_helper.dart';
@@ -16,6 +17,7 @@ import 'package:exch_app/src/utils/logger/logger.dart';
 import 'package:exch_app/src/utils/network/analytics_helper.dart';
 import 'package:exch_app/src/utils/network/api_helper.dart';
 import 'package:exch_app/src/utils/network/connectivity_helper.dart';
+import 'package:exch_app/src/utils/network/fcm_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -24,6 +26,9 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'firebase_options.dart';
 import 'package:flutter/foundation.dart';
+
+// Add navigator key
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
   runZonedGuarded(
@@ -45,22 +50,21 @@ void main() {
 initializeAppDeependencies() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // Pass all uncaught errors to Crashlytics
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter
+  // framework to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
   if (kReleaseMode) {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-
-    // Pass all uncaught errors to Crashlytics
-    FlutterError.onError = (errorDetails) {
-      FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-    };
-
-    // Pass all uncaught asynchronous errors that aren't handled by the Flutter
-    // framework to Crashlytics
-    PlatformDispatcher.instance.onError = (error, stack) {
-      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-      return true;
-    };
     await initAnalyticsHelper();
   }
 
@@ -74,6 +78,8 @@ initializeAppDeependencies() async {
   await initApiHelper();
   await initCurrencyHelper();
   await initRatesRepository();
+  await initFCMHelper();
+  await initDeepLinkHandler(navigatorKey);
 }
 
 ValueNotifier<bool> isAppInitialized = ValueNotifier(false);
@@ -102,6 +108,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ShadApp.material(
+      navigatorKey: navigatorKey,
       title: 'Exch ⚡',
       debugShowCheckedModeBanner: false,
       locale: defaultLocale,
