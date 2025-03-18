@@ -193,7 +193,7 @@ class FCMHelper {
             presentSound: true,
           ),
         ),
-        payload: json.encode(message.data),
+        payload: message.data.isNotEmpty ? json.encode(message.data) : "{}",
       );
     }
   }
@@ -223,7 +223,7 @@ class FCMHelper {
     analyticsHelper?.logEvent(
       type: EventType.remoteMessageHandled,
       parameters: {
-        'data': message.data.toString(),
+        'data': message.data.isNotEmpty ? json.encode(message.data) : "{}",
       },
     );
     // Add to stream for app to handle navigation

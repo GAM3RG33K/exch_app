@@ -1,6 +1,5 @@
 import 'package:exch_app/src/repositories/rates_repository.dart';
 import 'package:exch_app/src/screens/home_page.dart';
-import 'package:exch_app/src/utils/application/asset_helper.dart';
 import 'package:exch_app/src/utils/application/context_helper.dart';
 import 'package:exch_app/src/utils/application/orientation_helper.dart';
 import 'package:exch_app/src/utils/application/storage/storage_helper.dart';
@@ -54,13 +53,18 @@ class _SplashScreenState extends ResponsiveState<SplashScreen> {
     return Scaffold(
       backgroundColor: themeHelper.backgroundColor,
       body: const Center(
-        // child: Column(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   crossAxisAlignment: CrossAxisAlignment.center,
-        //   children: [
-        //     // Image.asset(assetHelper.kLogo, width: 250, height: 250),
-        //   ],
-        // ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Image.asset(assetHelper.kLogo, width: 250, height: 250),
+            Center(
+              child: SmallLoader(
+                padding: EdgeInsets.all(48),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
