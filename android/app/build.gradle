@@ -21,12 +21,14 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        // Enable core library desugaring
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = JavaVersion.VERSION_17
     }
 
     defaultConfig {
@@ -35,8 +37,8 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
-        compileSdk = 35
-        targetSdk = 35
+        compileSdk = 36
+        targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
         multiDexEnabled true
@@ -62,6 +64,16 @@ android {
             // Use R8 for better optimization
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    dependencies {
+        // Core library desugaring for Java 8+ APIs
+        coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
+        
+        // Add multidex support
+        implementation 'androidx.multidex:multidex:2.0.1'
+        
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0"
     }
 
     // Move splits configuration to android block level
