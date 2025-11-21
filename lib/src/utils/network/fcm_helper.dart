@@ -250,16 +250,10 @@ class FCMHelper {
       // Save token to local storage
       await storageHelper.storage.setString('fcm_token', token);
 
-      // TODO: Send token to your backend server
-      // await apiHelper.sendFCMToken(token);
-
       // Set up token refresh listener
       fcmMessaging.onTokenRefresh.listen((newToken) {
         log('FCM Token refreshed: $newToken');
         storageHelper.storage.setString('fcm_token', newToken);
-
-        // TODO: Send refreshed token to your backend
-        // apiHelper.sendFCMToken(newToken);
       });
     }
 

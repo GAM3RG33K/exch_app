@@ -98,7 +98,7 @@ class _CurrencyInputCardState extends State<CurrencyInputCard> {
           decoration: const ShadDecoration(
             border: ShadBorder.none,
           ),
-          suffix: !widget.allowCopy
+          trailing: !widget.allowCopy
               ? null
               : Padding(
                   padding: const EdgeInsets.all(8.0),

@@ -36,3 +36,7 @@ class ThemeHelper {
         primaryColor,
       ];
 }
+
+extension ColorExtension on Color {
+  Color withOp(double value) => withValues(alpha: value);
+}

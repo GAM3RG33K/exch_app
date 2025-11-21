@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:exch_app/l10n/app_localizations.dart';
 import 'package:exch_app/src/repositories/rates_repository.dart';
 import 'package:exch_app/src/screens/splash_screen.dart';
 import 'package:exch_app/src/utils/application/asset_helper.dart';
@@ -20,7 +21,6 @@ import 'package:exch_app/src/utils/network/connectivity_helper.dart';
 import 'package:exch_app/src/utils/network/fcm_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -107,7 +107,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ShadApp.material(
+    return ShadApp(
       navigatorKey: navigatorKey,
       title: 'Exch ⚡',
       debugShowCheckedModeBanner: false,

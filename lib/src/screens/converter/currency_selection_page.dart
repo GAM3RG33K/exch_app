@@ -88,7 +88,7 @@ class _CurrencySelectionPageState extends State<CurrencySelectionPage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   tileColor: isSelected
-                      ? themeHelper.primaryColor.withOpacity(0.1)
+                      ? themeHelper.primaryColor.withOp(0.1)
                       : null,
                   title: Text(
                     "${currencySymbolMap[currencyCode]} - ${currencyNameMap[currencyCode]}",
