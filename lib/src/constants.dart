@@ -20,8 +20,19 @@ typedef MultiListenableWidgetBuilder = Widget Function(
 const String keyType = 'type';
 
 // General constants
-const String kBaseUrl = 'https://exch.harshjoshi.dev/';
-const String kAppName = 'Exch ⚡';
+const String kBaseUrl = String.fromEnvironment(
+  'BASE_URL',
+  defaultValue: 'https://exch.harshjoshi.dev/',
+);
+const String kAppName = String.fromEnvironment(
+  'APP_NAME',
+  defaultValue: 'Exch ⚡',
+);
+const String kEnvironment = String.fromEnvironment(
+  'ENV',
+  defaultValue: 'prod',
+);
+
 const String kWebsite = 'https://exch.harshjoshi.dev';
 const String kShopWebsite = 'https://links.harshjoshi.dev';
 const String kWebSiteFAQ = '$kWebsite/faq';
@@ -31,6 +42,7 @@ const String kSupportEmail = 'contact@harshjoshi.dev';
 const String kPrefKeyIsFirstRun = 'isFirstRun';
 
 const String kPrefKeyCachedRateDate = 'cached_rate_date';
+const String kPrefKeyAuthToken = 'auth_token';
 
 // App Layouts
 const double kMinTabletSize = 600;
@@ -52,3 +64,8 @@ enum EventType {
 }
 
 enum CurrencyPosition { to, from }
+
+class AppColors {
+  static const Color green = Color(0xFF0F9D58);
+  static const Color red = Color(0xFFFF3B30);
+}

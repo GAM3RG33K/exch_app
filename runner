@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Forward all arguments to the exch script
+./scripts/exch "$@"

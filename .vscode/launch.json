@@ -6,21 +6,37 @@
     "configurations": [
         
         {
-            "name": "exch_app",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "exch_app (profile mode)",
+            "name": "Exch (Dev)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "debug",
+            "args": [
+                "--dart-define=BASE_URL=http://10.0.2.2:7147/",
+                "--dart-define=APP_NAME=Exch Dev",
+                "--dart-define=ENV=dev"
+            ]
         },
         {
-            "name": "exch_app (release mode)",
+            "name": "Exch (Prod)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "args": [
+                "--dart-define=BASE_URL=https://exch.harshjoshi.dev/",
+                "--dart-define=APP_NAME=Exch ⚡",
+                "--dart-define=ENV=prod"
+            ]
+        },
+        {
+            "name": "Exch (Staging)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "--dart-define=BASE_URL=http://10.0.2.2:7147/",
+                "--dart-define=APP_NAME=Exch Dev",
+                "--dart-define=ENV=dev"
+            ]
         }
     ]
 }
