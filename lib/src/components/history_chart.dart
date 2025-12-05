@@ -52,7 +52,7 @@ class HistoryChart extends StatelessWidget {
     final mainColor = isPositiveTrend ? AppColors.green : AppColors.red;
 
     return Container(
-      height: context.uHeight * 40,
+      height: context.uHeight * 35,
       padding: const EdgeInsets.all(16),
       child: LineChart(
         LineChartData(

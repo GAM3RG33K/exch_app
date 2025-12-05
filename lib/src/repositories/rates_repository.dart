@@ -1,7 +1,6 @@
 // rate fetch api : /api/rates/latest
 
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 
@@ -143,40 +142,40 @@ class RatesRepository {
     try {
       final startTimestamp = DateTime.now().microsecondsSinceEpoch;
 
-      if (kDebugMode) {
-        // Dummy data for debug mode
-        final dummyHistory = <HistoryDataEntry>[];
-        final now = DateTime.now();
-        final random = Random();
-        double currentRate = currentBase ?? 1.0;
+      // if (kDebugMode) {
+      //   // Dummy data for debug mode
+      //   final dummyHistory = <HistoryDataEntry>[];
+      //   final now = DateTime.now();
+      //   final random = Random();
+      //   double currentRate = currentBase ?? 1.0;
 
-        // Generate 100 data points
-        for (int i = 100; i >= 0; i--) {
-          final date = now.subtract(Duration(days: i));
-          final dateString =
-              "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+      //   // Generate 100 data points
+      //   for (int i = 100; i >= 0; i--) {
+      //     final date = now.subtract(Duration(days: i));
+      //     final dateString =
+      //         "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
 
-          // Random walk
-          final change = (random.nextDouble() - 0.5) * 0.05;
-          currentRate += change;
-          if (currentRate < 0.1) currentRate = 0.1;
+      //     // Random walk
+      //     final change = (random.nextDouble() - 0.5) * 0.05;
+      //     currentRate += change;
+      //     if (currentRate < 0.1) currentRate = 0.1;
 
-          dummyHistory.add(HistoryDataEntry(
-              date: DateTime.parse(dateString), rate: currentRate));
-        }
+      //     dummyHistory.add(HistoryDataEntry(
+      //         date: DateTime.parse(dateString), rate: currentRate));
+      //   }
 
-        await Future.delayed(
-            const Duration(milliseconds: 500)); // Simulate network delay
+      //   await Future.delayed(
+      //       const Duration(milliseconds: 500)); // Simulate network delay
 
-        return RepoResponse<RateHistory>(
-          turnAroundTime: 500,
-          data: RateHistory(
-            base: base,
-            target: target,
-            history: dummyHistory,
-          ),
-        );
-      }
+      //   return RepoResponse<RateHistory>(
+      //     turnAroundTime: 500,
+      //     data: RateHistory(
+      //       base: base,
+      //       target: target,
+      //       history: dummyHistory,
+      //     ),
+      //   );
+      // }
 
       final queryParams = {
         'base': base,
