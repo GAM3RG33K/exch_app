@@ -2,7 +2,7 @@ name: exch_app
 description: A modern, minimal, real-time currency converter
 publish_to: 'none'
 
-version: 0.1.4+6
+version: 0.1.4+7
 
 environment:
   sdk: '>=3.4.4 <4.0.0'
@@ -67,3 +67,4 @@ flutter:
   
   assets:
     - assets/images/
+    - shorebird.yaml

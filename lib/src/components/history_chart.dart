@@ -31,10 +31,7 @@ class HistoryChart extends StatelessWidget {
       );
     }
 
-    final sortedKeys = historyData.history
-      ..sort(
-        (a, b) => a.date.isBefore(b.date) ? 1 : 0,
-      );
+    final sortedKeys = historyData.history;
     final spots = <FlSpot>[];
 
     for (int i = 0; i < sortedKeys.length; i++) {
