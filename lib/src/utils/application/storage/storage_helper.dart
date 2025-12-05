@@ -41,6 +41,18 @@ class StorageHelper {
   set cachedRateDate(String value) =>
       storage.setString(kPrefKeyCachedRateDate, value);
 
+  String? get authToken {
+    return storage.getString(kPrefKeyAuthToken);
+  }
+
+  set authToken(String? value) {
+    if (value == null) {
+      storage.remove(kPrefKeyAuthToken);
+    } else {
+      storage.setString(kPrefKeyAuthToken, value);
+    }
+  }
+
   String get latestRatesKey {
     final today = DateTime.now().dateOnly;
     return "$today";

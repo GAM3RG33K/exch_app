@@ -1,7 +1,10 @@
+import 'package:exch_app/src/components/history_chart.dart';
 import 'package:exch_app/src/components/home/currency_input_card.dart';
 import 'package:exch_app/src/constants.dart';
+import 'package:exch_app/src/models/api/rate_history.dart';
 import 'package:exch_app/src/models/api/rates_data.dart';
 import 'package:exch_app/src/models/currency.dart';
+import 'package:exch_app/src/repositories/rates_repository.dart';
 import 'package:exch_app/src/utils/application/context_helper.dart';
 import 'package:exch_app/src/utils/application/orientation_helper.dart';
 import 'package:exch_app/src/utils/application/theme_helper.dart';
@@ -38,6 +41,10 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
   final ValueNotifier<num> exchangeRateNotifier = ValueNotifier(86);
   final ValueNotifier<num> fromAmountNotifier = ValueNotifier(1);
   final ValueNotifier<num> toAmountNotifier = ValueNotifier(1);
+
+  final ValueNotifier<RateHistory?> historyNotifier = ValueNotifier(null);
+  final ValueNotifier<bool> isHistoryLoadingNotifier = ValueNotifier(false);
+
   Future<void> initialization() async {
     await forceOrientation(portait: true, landscape: true);
     latestRatesNotifier.value = widget.latestRates.rateInCurrency;
@@ -56,8 +63,28 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
         exchangeRateNotifier.value = newExchangeRate;
 
         handleConvert(fromAmountNotifier.value, newExchangeRate);
+        fetchHistory();
       },
     );
+  }
+
+  Future<void> fetchHistory() async {
+    isHistoryLoadingNotifier.value = true;
+    final from = fromCurrencyNotifier.value.abbr;
+    final to = toCurrencyNotifier.value.abbr;
+
+    final response = await ratesRepository.fetchRateHistory(
+      base: from,
+      target: to,
+      currentBase: toAmountNotifier.value.toDouble(),
+    );
+
+    if (mounted) {
+      if (response?.data != null) {
+        historyNotifier.value = response!.data;
+      }
+      isHistoryLoadingNotifier.value = false;
+    }
   }
 
   Map<String, Currency> get latestRates => latestRatesNotifier.value;
@@ -147,6 +174,7 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                               fromAmountNotifier.value,
                               exchangeRateNotifier.value,
                             );
+                            fetchHistory();
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -202,6 +230,7 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                         fromAmountNotifier.value,
                         exchangeRateNotifier.value,
                       );
+                      fetchHistory();
                     },
                     icon: Icon(
                       Icons.swap_vert,
@@ -255,6 +284,7 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                               fromAmountNotifier.value,
                               exchangeRateNotifier.value,
                             );
+                            fetchHistory();
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -353,6 +383,25 @@ class _ConverterUIState extends ResponsiveState<ConverterUI> {
                   ],
                 );
               }),
+          const SizedBox(height: 40),
+          MultiNotifierBuilder(
+            listenables: {
+              "history": historyNotifier,
+              "loading": isHistoryLoadingNotifier,
+            },
+            builder: (context, _, values) {
+              final history = values["history"] as RateHistory?;
+              final isLoading = values["loading"] as bool;
+
+              if (history == null && !isLoading) return const SizedBox.shrink();
+
+              return HistoryChart(
+                historyData:
+                    history ?? RateHistory(base: "", target: "", history: []),
+                isLoading: isLoading,
+              );
+            },
+          ),
         ],
       ),
     );

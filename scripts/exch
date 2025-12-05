@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# Default environment
+ENV="prod"
+DRY_RUN=false
+
+# Parse arguments
+ARGS=()
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --env=*)
+      ENV="${1#*=}"
+      shift
+      ;;
+    --dry-run)
+      DRY_RUN=true
+      shift
+      ;;
+    *)
+      ARGS+=("$1")
+      shift
+      ;;
+  esac
+done
+
+# Restore positional parameters
+set -- "${ARGS[@]}"
+
+COMMAND=$1
+shift
+
+if [ -z "$COMMAND" ]; then
+  echo "Usage: ./scripts/exch <command> [--env=<env>] [args...]"
+  echo "Commands:"
+  echo "  run, build, clean, gen, get"
+  echo "  reset"
+  echo "  build-dev-apk, build-prod-apk, build-staging-apk"
+  echo "  build-dev-ios, build-prod-ios, build-staging-ios"
+  echo "  build-prod-appbundle"
+  echo "  run-dev, run-prod"
+  exit 1
+fi
+
+# Load environment variables
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENV_FILE="$SCRIPT_DIR/config/$ENV.env"
+
+if [ ! -f "$ENV_FILE" ]; then
+  echo "Error: Environment file '$ENV_FILE' not found."
+  exit 1
+fi
+
+# Construct dart-define flags
+DART_DEFINES=""
+while IFS='=' read -r key value; do
+  # Skip comments and empty lines
+  if [[ $key =~ ^#.* ]] || [ -z "$key" ]; then
+    continue
+  fi
+  # Remove quotes if present
+  value="${value%\"}"
+  value="${value#\"}"
+  DART_DEFINES="$DART_DEFINES --dart-define=$key=\"$value\""
+done < "$ENV_FILE"
+
+# Export variables for sub-scripts
+export ENV
+export DRY_RUN
+export DART_DEFINES
+export SCRIPT_DIR
+
+# Execute command script
+COMMAND_SCRIPT="$SCRIPT_DIR/commands/$COMMAND.sh"
+
+if [ -f "$COMMAND_SCRIPT" ]; then
+  bash "$COMMAND_SCRIPT" "$@"
+else
+  echo "Error: Command '$COMMAND' not found."
+  exit 1
+fi

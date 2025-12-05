@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:exch_app/src/constants.dart';
+import 'package:exch_app/src/utils/application/storage/storage_helper.dart';
 import 'package:exch_app/src/utils/logger/logger.dart';
 import 'package:get_it/get_it.dart';
 
@@ -39,6 +40,13 @@ class ApiHelper {
             'Data: ${options.data}',
             name: 'API',
           );
+
+          // Add Auth Token if available
+          final token = GetIt.instance.get<StorageHelper>().authToken;
+          if (token != null && token.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+
           return handler.next(options);
         },
         onResponse: (response, handler) {

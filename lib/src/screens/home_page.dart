@@ -186,6 +186,7 @@ class _HomePageState extends ResponsiveState<HomePage> {
               ],
             ),
           ),
+          const SizedBox(height: kToolbarHeight),
         ],
       ),
     );
