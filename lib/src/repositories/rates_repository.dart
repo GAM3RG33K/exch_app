@@ -142,40 +142,21 @@ class RatesRepository {
     try {
       final startTimestamp = DateTime.now().microsecondsSinceEpoch;
 
-      // if (kDebugMode) {
-      //   // Dummy data for debug mode
-      //   final dummyHistory = <HistoryDataEntry>[];
-      //   final now = DateTime.now();
-      //   final random = Random();
-      //   double currentRate = currentBase ?? 1.0;
+      final cachedHistory = await storageHelper.getRateHistory(
+        base: base,
+        target: target,
+        start: start,
+        end: end,
+      );
 
-      //   // Generate 100 data points
-      //   for (int i = 100; i >= 0; i--) {
-      //     final date = now.subtract(Duration(days: i));
-      //     final dateString =
-      //         "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
-
-      //     // Random walk
-      //     final change = (random.nextDouble() - 0.5) * 0.05;
-      //     currentRate += change;
-      //     if (currentRate < 0.1) currentRate = 0.1;
-
-      //     dummyHistory.add(HistoryDataEntry(
-      //         date: DateTime.parse(dateString), rate: currentRate));
-      //   }
-
-      //   await Future.delayed(
-      //       const Duration(milliseconds: 500)); // Simulate network delay
-
-      //   return RepoResponse<RateHistory>(
-      //     turnAroundTime: 500,
-      //     data: RateHistory(
-      //       base: base,
-      //       target: target,
-      //       history: dummyHistory,
-      //     ),
-      //   );
-      // }
+      if (cachedHistory != null) {
+        final endTimestamp = DateTime.now().microsecondsSinceEpoch;
+        final turnAroundTime = (endTimestamp - startTimestamp) ~/ 1000;
+        return RepoResponse<RateHistory>(
+          turnAroundTime: turnAroundTime,
+          data: cachedHistory,
+        );
+      }
 
       final queryParams = {
         'base': base,
@@ -194,6 +175,14 @@ class RatesRepository {
 
       final data = response.data as Map<String, dynamic>;
       final historyData = RateHistory.fromJson(data);
+
+      unawaited(storageHelper.setRateHistory(
+        historyData,
+        base: base,
+        target: target,
+        start: start,
+        end: end,
+      ));
 
       return RepoResponse<RateHistory>(
         turnAroundTime: turnAroundTime,

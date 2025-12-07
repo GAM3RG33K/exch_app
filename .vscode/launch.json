@@ -31,9 +31,9 @@
             "name": "Exch (Staging)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release",
+            "flutterMode": "debug",
             "args": [
-                "--dart-define=BASE_URL=http://10.0.2.2:7147/",
+                "--dart-define=BASE_URL=https://exch.harshjoshi.dev/",
                 "--dart-define=APP_NAME=Exch Dev",
                 "--dart-define=ENV=dev"
             ]
