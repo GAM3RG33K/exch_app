@@ -2,7 +2,7 @@ name: exch_app
 description: A modern, minimal, real-time currency converter
 publish_to: 'none'
 
-version: 0.1.4+7
+version: 0.1.4+8
 
 environment:
   sdk: '>=3.4.4 <4.0.0'
