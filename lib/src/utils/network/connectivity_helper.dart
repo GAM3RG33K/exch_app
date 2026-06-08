@@ -10,7 +10,10 @@ Future<void> initConnectivityHelper() async {
     checkInterval: const Duration(minutes: 1),
     useDefaultOptions: false,
     customCheckOptions: [
-      InternetCheckOption(uri: Uri.parse(kBaseUrl)),
+      InternetCheckOption(
+        uri: Uri.parse(kBaseUrl),
+        timeout: const Duration(seconds: 60),
+      ),
     ],
   );
   final connectivityHelper = ConnectivityHelper._(connection);
